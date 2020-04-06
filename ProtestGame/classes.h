@@ -9,6 +9,13 @@
 #ifndef classes_h
 #define classes_h
 
+#include <vector>
+
+struct TCoordinate {
+    size_t X;
+    size_t Y;
+};
+
 class TObject {
     
 };

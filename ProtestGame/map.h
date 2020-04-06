@@ -17,6 +17,8 @@ class TMap {
 public:
     TMap();
     ~TMap();
+    const std::vector<std::shared_ptr<TObject>>& GetObjects() const;
+    TCoordinate GetMapBorder() const;
 private:
     std::vector<std::shared_ptr<TObject>> Objects_;
     size_t Width_;
