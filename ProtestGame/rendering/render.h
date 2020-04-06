@@ -14,18 +14,19 @@
 
 class TRenderer {
 public:
-    virtual void Render(const TMap& map) = 0;
+    virtual void Render() = 0;
     virtual void Flush() = 0;
 };
 
 class TConsoleRenderer : public TRenderer {
 public:
-    TConsoleRenderer(const size_t resolution);
+    TConsoleRenderer(const size_t resolution, const TMap& map);
 
-    void Render(const TMap& map) override;
+    void Render() override;
     void Flush() override;
 private:
     const size_t Resolution_;
+    const TMap& Map_;
     std::vector<std::vector<char>> Screen_;
 };
 #endif /* render_h */

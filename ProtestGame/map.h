@@ -15,10 +15,21 @@
 
 class TMap {
 public:
-    TMap();
-    ~TMap();
-    const std::vector<std::shared_ptr<TObject>>& GetObjects() const;
-    TCoordinate GetMapBorder() const;
+    TMap()
+        : Width_(20)
+        , Height_(40)
+    {
+        Objects_.push_back(std::make_shared<TBuilding>());
+    }
+
+    ~TMap() = default;
+    const std::vector<std::shared_ptr<TObject>>& GetObjects() const {
+        return Objects_;
+    }
+
+    TCoordinate GetMapBorder() const {
+        return TCoordinate{Width_, Height_};
+    }
 private:
     std::vector<std::shared_ptr<TObject>> Objects_;
     size_t Width_;

@@ -8,8 +8,20 @@
 
 #include "render.h"
 #include <iostream>
+#include <cmath>
 
 using namespace std;
+
+TConsoleRenderer::TConsoleRenderer(const size_t resolution, const TMap& map)
+    : Resolution_(resolution)
+    , Map_(map)
+{
+    const TCoordinate mapBorder = Map_.GetMapBorder();
+    Screen_.resize(round(mapBorder.X * 1.0 / Resolution_));
+    for (size_t x = 0; x < Screen_.size(); ++x) {
+        Screen_[x].resize(round(mapBorder.Y * 1.0 / Resolution_), ' ');
+    }
+}
 
 void TConsoleRenderer::Flush() {
     #if defined _WIN32
@@ -21,27 +33,40 @@ void TConsoleRenderer::Flush() {
     #endif
 }
 
-void TConsoleRenderer::Render(const TMap& map) {
+void TConsoleRenderer::Render() {
     for (size_t x = 0; x < Screen_.size(); ++x) {
         for (size_t y = 0; y < Screen_[0].size(); ++y) {
             Screen_[x][y] = ' ';
         }
     }
 
-    for (const shared_ptr<TObject>& object : map.GetObjects()) {
+    for (const shared_ptr<TObject>& object : Map_.GetObjects()) {
         const TConsoleShape& consoleOnjectShape = object->GetConsoleShape(Resolution_);
     
         for (size_t x = 0; x < consoleOnjectShape.Shape.size(); ++x) {
-            for (size_t y = 0; y < consoleOnject.Shape[0].size(); ++y) {
+            for (size_t y = 0; y < consoleOnjectShape.Shape[0].size(); ++y) {
                 Screen_[x + consoleOnjectShape.Position.X][y + consoleOnjectShape.Position.Y] = consoleOnjectShape.Shape[x][y];
             }
         }
     }
     
-    for (size_t y = 0; y < Screen_[0].size(); ++y) {
-        for (size_t x = 0; x < Screen_.size(); ++x) {
-            std::cout << Screen_[x][y];
-        }
-        std::cout << '\n';
+    cout << '*';
+    for (size_t x = 0; x < Screen_.size(); ++x) {
+        cout << '-';
     }
+    cout << '*' << '\n';
+
+    for (size_t y = 0; y < Screen_[0].size(); ++y) {
+        cout << '|';
+        for (size_t x = 0; x < Screen_.size(); ++x) {
+            cout << Screen_[x][y];
+        }
+        cout << '|' << '\n';
+    }
+    
+    cout << '*';
+    for (size_t x = 0; x < Screen_.size(); ++x) {
+        cout << '-';
+    }
+    cout << '*';
 }

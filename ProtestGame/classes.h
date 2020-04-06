@@ -16,12 +16,24 @@ struct TCoordinate {
     size_t Y;
 };
 
+struct TConsoleShape {
+    std::vector<std::vector<char>> Shape;
+    TCoordinate Position;
+};
+
 class TObject {
-    
+public:
+    virtual TConsoleShape GetConsoleShape(const size_t resolution) const = 0;
 };
 
 class TBuilding : public TObject {
-    
+public:
+    TConsoleShape GetConsoleShape(const size_t resolution) const override {
+        TConsoleShape shape;
+        shape.Position = {1, 2};
+        shape.Shape = {{'@', '@', '@', '@'}, {'@', 'x', 'x', '@'}, {'@', '@', '@', '@'}};
+        return shape;
+    }
 };
 
 class TMovingObject : public TObject {
