@@ -15,11 +15,11 @@
 
 class TMap {
 public:
-    TMap()
-        : Width_(20)
-        , Height_(40)
+    TMap(size_t width, size_t height)
+        : Width_(width)
+        , Height_(height)
     {
-        Objects_.push_back(std::make_shared<TBuilding>());
+        // FIXME
     }
 
     ~TMap() = default;

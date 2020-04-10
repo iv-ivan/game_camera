@@ -8,7 +8,6 @@
 
 #include "render.h"
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
@@ -33,10 +32,14 @@ void TConsoleRenderer::Flush() {
     #endif
 }
 
-void TConsoleRenderer::Render() {
+void TConsoleRenderer::Render(const TCamera& camera) {
+    const TCamera resolutedCamera = camera;
+
     for (size_t x = 0; x < Screen_.size(); ++x) {
         for (size_t y = 0; y < Screen_[0].size(); ++y) {
-            Screen_[x][y] = ' ';
+            if (resolutedCamera.IsVisible({x, y})) {
+                Screen_[x][y] = ' ';
+            }
         }
     }
 
@@ -45,28 +48,18 @@ void TConsoleRenderer::Render() {
     
         for (size_t x = 0; x < consoleOnjectShape.Shape.size(); ++x) {
             for (size_t y = 0; y < consoleOnjectShape.Shape[0].size(); ++y) {
-                Screen_[x + consoleOnjectShape.Position.X][y + consoleOnjectShape.Position.Y] = consoleOnjectShape.Shape[x][y];
+                const TCoordinate currentCoordinate{x + consoleOnjectShape.Position.X, y + consoleOnjectShape.Position.Y};
+                if (resolutedCamera.IsVisible(currentCoordinate)) {
+                    Screen_[x + consoleOnjectShape.Position.X][y + consoleOnjectShape.Position.Y] = consoleOnjectShape.Shape[x][y];
+                }
             }
         }
     }
     
-    cout << '*';
-    for (size_t x = 0; x < Screen_.size(); ++x) {
-        cout << '-';
-    }
-    cout << '*' << '\n';
-
-    for (size_t y = 0; y < Screen_[0].size(); ++y) {
-        cout << '|';
-        for (size_t x = 0; x < Screen_.size(); ++x) {
+    for (size_t x = resolutedCamera.X; x < resolutedCamera.X + resolutedCamera.W; ++x) {
+        for (size_t y = resolutedCamera.Y; y < resolutedCamera.Y + resolutedCamera.H; ++y) {
             cout << Screen_[x][y];
         }
-        cout << '|' << '\n';
+        cout << '\n';
     }
-    
-    cout << '*';
-    for (size_t x = 0; x < Screen_.size(); ++x) {
-        cout << '-';
-    }
-    cout << '*';
 }
