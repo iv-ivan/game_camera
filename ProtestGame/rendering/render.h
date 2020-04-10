@@ -21,14 +21,14 @@ public:
 
 class TConsoleRenderer : public TRenderer {
 public:
-    TConsoleRenderer(const size_t resolution, const TMap& map, const TCamera& camera);
+    TConsoleRenderer(const size_t resolution, const TMap& map);
 
     void Render() override;
     void Flush() override;
 private:
     const size_t Resolution_;
     const TMap& Map_;
-    TCamera Camera_;
+    const std::shared_ptr<const TCamera> Camera_;
     std::vector<std::vector<char>> Screen_;
 };
 #endif /* render_h */

@@ -15,11 +15,13 @@
 
 class TMap {
 public:
-    TMap(size_t width, size_t height)
+    TMap(const size_t width, const size_t height, const size_t cameraWidth, const size_t cameraHeight)
         : Width_(width)
         , Height_(height)
+    , Camera_(std::make_shared<TCamera>())
     {
-        // FIXME
+        Camera_->W = cameraWidth;
+        Camera_->H = cameraHeight;
     }
 
     ~TMap() = default;
@@ -27,11 +29,18 @@ public:
         return Objects_;
     }
 
+    const std::shared_ptr<const TCamera> GetCamera() const {
+        return Camera_;
+    }
+
     TCoordinate GetMapBorder() const {
         return TCoordinate{Width_, Height_};
     }
 private:
     std::vector<std::shared_ptr<TObject>> Objects_;
+    TPlayer Me_;
+    const std::shared_ptr<TCamera> Camera_;
+
     size_t Width_;
     size_t Height_;
 };

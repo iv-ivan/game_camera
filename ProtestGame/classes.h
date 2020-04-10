@@ -72,7 +72,11 @@ class THuman : public TMovingObject {
 };
 
 class TPlayer : public THuman {
-    
+    TConsoleShape GetConsoleShape(const size_t resolution) const override {
+        // FIXME
+        TConsoleShape shape;
+        return shape;
+    }
 };
 
 class TPoliceman : public TMovingObject {
