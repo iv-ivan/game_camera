@@ -36,9 +36,17 @@ public:
     TCoordinate GetMapBorder() const {
         return TCoordinate{Width_, Height_};
     }
+    
+    const TPlayer& GetPlayer() const {
+        return Player_;
+    }
+
+    TPlayer& GetPlayer() {
+        return Player_;
+    }
 private:
     std::vector<std::shared_ptr<TObject>> Objects_;
-    TPlayer Me_;
+    TPlayer Player_;
     const std::shared_ptr<TCamera> Camera_;
 
     size_t Width_;

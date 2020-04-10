@@ -4,13 +4,20 @@
 
 int main(int argc, char* args[]) {
     TMap map(20, 40, 5, 5);
-
     TConsoleRenderer renderer(1, map);
-    renderer.Flush();
 
-    renderer.Render();
+    while (true) {
+        renderer.Flush();
+        renderer.Render();
     
-    int x;
-    std::cin >> x;
+        char x;
+        std::cin >> x;
+        if (x == 'q') {
+            break;
+        } else {
+           map.GetPlayer().Move(x);
+        }
+    }
+
 	return 0;
 }

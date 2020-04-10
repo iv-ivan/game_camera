@@ -44,19 +44,25 @@ void TConsoleRenderer::Render() {
         }
     }
 
-    for (const shared_ptr<TObject>& object : Map_.GetObjects()) {
-        const TConsoleShape& consoleOnjectShape = object->GetConsoleShape(Resolution_);
-    
-        for (size_t x = 0; x < consoleOnjectShape.Shape.size(); ++x) {
-            for (size_t y = 0; y < consoleOnjectShape.Shape[0].size(); ++y) {
-                const TCoordinate currentCoordinate{x + consoleOnjectShape.Position.X, y + consoleOnjectShape.Position.Y};
+    auto drawConsoleShape = [&resolutedCamera, &screen = Screen_](const TConsoleShape& objectShape) {
+        for (size_t x = 0; x < objectShape.Shape.size(); ++x) {
+            for (size_t y = 0; y < objectShape.Shape[0].size(); ++y) {
+                const TCoordinate currentCoordinate{x + objectShape.Position.X, y + objectShape.Position.Y};
                 if (resolutedCamera.IsVisible(currentCoordinate)) {
-                    Screen_[x + consoleOnjectShape.Position.X][y + consoleOnjectShape.Position.Y] = consoleOnjectShape.Shape[x][y];
+                    screen[x + objectShape.Position.X][y + objectShape.Position.Y] = objectShape.Shape[x][y];
                 }
             }
         }
+    };
+
+    for (const shared_ptr<TObject>& object : Map_.GetObjects()) {
+        const TConsoleShape& objectShape = object->GetConsoleShape(Resolution_);
+        drawConsoleShape(objectShape);
     }
     
+    const TConsoleShape& playerShape = Map_.GetPlayer().GetConsoleShape(Resolution_);
+    drawConsoleShape(playerShape);
+
     for (size_t x = resolutedCamera.X; x < resolutedCamera.X + resolutedCamera.W; ++x) {
         for (size_t y = resolutedCamera.Y; y < resolutedCamera.Y + resolutedCamera.H; ++y) {
             cout << Screen_[x][y];

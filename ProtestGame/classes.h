@@ -52,6 +52,8 @@ struct TCamera : public TRectangle {
 class TObject {
 public:
     virtual TConsoleShape GetConsoleShape(const size_t resolution) const = 0;
+protected:
+    TCoordinate Position_;
 };
 
 class TBuilding : public TObject {
@@ -72,10 +74,33 @@ class THuman : public TMovingObject {
 };
 
 class TPlayer : public THuman {
+public:
+    TPlayer() {
+        Position_.X = 0;
+        Position_.Y = 0;
+    }
+
     TConsoleShape GetConsoleShape(const size_t resolution) const override {
         // FIXME
         TConsoleShape shape;
+        shape.Position.X = std::round(Position_.X * 1.0 / resolution);
+        shape.Position.Y = std::round(Position_.Y * 1.0 / resolution);
+        shape.Shape.resize(1);
+        shape.Shape[0].resize(1);
+        shape.Shape[0][0] = '@';
         return shape;
+    }
+    
+    void Move(const char c) {
+        if (c == 'w' && Position_.X > 0) {
+            --Position_.X;
+        } else if (c == 's') {
+            ++Position_.X;
+        } else if (c == 'a' && Position_.Y > 0) {
+            --Position_.Y;
+        } else if (c == 'd') {
+            ++Position_.Y;
+        }
     }
 };
 
