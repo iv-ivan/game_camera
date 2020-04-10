@@ -15,19 +15,20 @@
 
 class TRenderer {
 public:
-    virtual void Render(const TCamera& camera) = 0;
+    virtual void Render() = 0;
     virtual void Flush() = 0;
 };
 
 class TConsoleRenderer : public TRenderer {
 public:
-    TConsoleRenderer(const size_t resolution, const TMap& map);
+    TConsoleRenderer(const size_t resolution, const TMap& map, const TCamera& camera);
 
-    void Render(const TCamera& camera) override;
+    void Render() override;
     void Flush() override;
 private:
     const size_t Resolution_;
     const TMap& Map_;
+    TCamera Camera_;
     std::vector<std::vector<char>> Screen_;
 };
 #endif /* render_h */

@@ -11,9 +11,10 @@
 
 using namespace std;
 
-TConsoleRenderer::TConsoleRenderer(const size_t resolution, const TMap& map)
+TConsoleRenderer::TConsoleRenderer(const size_t resolution, const TMap& map, const TCamera& camera)
     : Resolution_(resolution)
     , Map_(map)
+    , Camera_(camera)
 {
     const TCoordinate mapBorder = Map_.GetMapBorder();
     Screen_.resize(round(mapBorder.X * 1.0 / Resolution_));
@@ -32,8 +33,8 @@ void TConsoleRenderer::Flush() {
     #endif
 }
 
-void TConsoleRenderer::Render(const TCamera& camera) {
-    const TCamera resolutedCamera = camera;
+void TConsoleRenderer::Render() {
+    const TCamera resolutedCamera = Camera_.ApplyResolution(Resolution_);
 
     for (size_t x = 0; x < Screen_.size(); ++x) {
         for (size_t y = 0; y < Screen_[0].size(); ++y) {
